@@ -4,7 +4,7 @@ import './Menu.css';
 
 const Menu = () => {
   return (
-    <div className="sidebar">
+    <div className="menu">
       <SearchBar />
       {/* Other content can go here */}
     </div>
