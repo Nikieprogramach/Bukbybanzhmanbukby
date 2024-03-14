@@ -2,6 +2,8 @@
     display: flex;
     justify-content: center;
     margin-top: 20px; 
+    margin-left: 10px;
+    margin-right: 10px;
   }
   
 .search-bar input[type="text"] {

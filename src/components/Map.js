@@ -7,11 +7,10 @@ import {
  Annotation,
  ZoomableGroup
 } from "react-simple-maps"
-
 import {Tooltip as ReactTooltip} from "react-tooltip"
 import 'react-tooltip/dist/react-tooltip.css'
-
 import MapMarker from "./MapMarker";
+import "./Map.css";
 
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json"
 
@@ -47,7 +46,7 @@ function Map() {
             <ReactTooltip id="tooltip" place="top" content={content}/>
             <div style={{width: "100%"}}>
                 <ComposableMap data-tip="" projection="geoMercator" 
-                    projectionConfig={{center:[16, -70]}}
+                    projectionConfig={{center:[16, -71]}}
                     style={{height:'200vh', width:'150vw', overflow: 'hidden'}}
                     >
                 <ZoomableGroup
@@ -62,8 +61,14 @@ function Map() {
                                 <Geography key={geo.rsmKey} geography={geo} data-tooltip-id = "tooltip" 
                                     onMouseEnter={() => {setContent(geo.properties.name); 
                                     console.log(content)}} 
+                                    fill="#2ca2de"
+                                    stroke="#000000" 
+                                    strokeWidth={0.2}
                                     onMouseLeave={() => {setContent("")}} 
-                                    style={{default: { outline: "none" }, hover: { outline: "none"},pressed: { fill: "#F00" }}}/>
+                                    style={{default: { outline: "none" }, 
+                                    hover: { outline: "none"},
+                                    pressed: { fill: "#F00" }}}
+                                    />
                             ))
                             }
                         </Geographies>
