@@ -18,7 +18,7 @@ const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-map
 const Markers = [
     {
         name: "Tochka",
-        coordinates: [23.3219, 42.6977] // flipped cords [East, North]
+        coordinates: [-43.13749, 147.86636] // flipped cords [East, North]
     }
 ]
 
