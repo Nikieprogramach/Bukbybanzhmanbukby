@@ -22,7 +22,6 @@ const Markers = [
 function Map() {
   return (
     <div style={{width: "100%", height: "100%", display: "flex"}}>
-        <p>Map</p>
         <div style={{width: "1400px"}}>
             <ComposableMap>
                 <ZoomableGroup zoom={1}>
