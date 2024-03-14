@@ -1,8 +1,53 @@
 .menu {
     position: fixed; 
     height: 100vh;
-    width: 250px;
+    width: 270px;
     background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    pointer-events: none;
+    transition: left 0.5s ease-in-out;
   }
+
+.menu-button {
+    position: absolute;
+    background-image: url(../images/arrow.png);
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid #A2D2DF;
+    border-radius: 50%;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.5s ease-in-out;
+ }
+
+ .menu-button.rotate {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  padding-left: 10px;
+  height:65px;
+}
+
+/* .menu-header img {
+  margin-right: 10px;
+} */
+
+#logo{
+
+  width: 75px;
+  height: 65px;
+  background-image: url('../images/logo.png');
+  background-size:100%; 
+  background-repeat: no-repeat; 
+  background-position: center;
+  background-color: #A2D2DF;
+  border-radius: 10px;
+}
