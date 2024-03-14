@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
  ComposableMap,
  Geographies,
@@ -27,11 +28,18 @@ const mapHeight = 500;
 function Map() {
     const [content, setContent] = useState("")
     const [responseData, setResponseData] = useState('');
+    const [searchType, setSearchType] = useState('all')
+    const [name, setName] = useState('')
 
     const fetchData = async () => {
         try {
-          const response = await fetch('http://localhost:5000/getFish');
-          const data = await response.json();
+          const response = await axios.get('http://localhost:5000/getFish',{
+            params: {
+                searchType: searchType,
+                name: name
+              }
+          });
+          const data = await response.data;
           setResponseData(data);
         } catch (error) {
           console.error('Error:', error);
@@ -65,7 +73,7 @@ function Map() {
                             ))
                             }
                         </Geographies>
-                        {responseData? 
+                        {responseData && responseData != "Wrong input!"? 
                             responseData.map(({id, name, latitude, longitude, amount}) => (
                                 <Marker key={id} coordinates={[longitude, latitude]}>
                                     {/* <circle r={1} fill="#F00" strokeWidth={2} style={{hover + }}/>
