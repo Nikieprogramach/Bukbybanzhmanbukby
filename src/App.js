@@ -1,10 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 import Map from './components/Map';
+import Menu from './components/Menu';
 
 function App() {
   return (
-    <Map/>
+    <div>
+      <Menu/>
+      <Map/>
+    </div>
   );
 }
 
