@@ -12,6 +12,7 @@ import {Tooltip as ReactTooltip} from "react-tooltip"
 import 'react-tooltip/dist/react-tooltip.css'
 import MapMarker from "./MapMarker";
 import "./Map.css";
+import divaRiba from './ribasigma.png';
 
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json"
 
@@ -22,16 +23,16 @@ const mapHeight = 510;
 function Map() {
     const [content, setContent] = useState("")
     const [responseData, setResponseData] = useState('');
-    const [searchType, setSearchType] = useState('all')
-    const [name, setName] = useState('default')
+    const [searchType, setSearchType] = useState('byName')
+    const [name, setName] = useState('Hippocampus reidi')
     const [getData, setGetData] = useState(false)
 
     const fetchData = async () => {
         try {
           const response = await axios.get('http://localhost:5000/getFish',{
             params: {
-                searchType: "all",
-                name: "Teleostei"
+                searchType: searchType,
+                name: name
               }
           });
           const data = await response.data;
@@ -89,13 +90,11 @@ function Map() {
                                     </text> */}
                                     <circle
                                         r={2}
-                                        style={{ fill: '#F00', strokeWidth: 2, opacity: amount/10 }}
-                                        onMouseEnter={(e) => { e.target.nextSibling.style.visibility = 'visible'; }}
-                                        onMouseLeave={(e) => { e.target.nextSibling.style.visibility = 'hidden'; }}
+                                        style={{ fill: 'white', strokeWidth: 2, opacity: amount/10 }}
                                     />
-                                    <text style={{ textAnchor: 'middle', y: -1, visibility: 'hidden' }}>
+                                    {/* <text style={{ textAnchor: 'middle', y: -1, visibility: 'hidden' }}>
                                         {name}
-                                    </text>
+                                    </text> */}
                                 </Marker>
                             ))
                             :
