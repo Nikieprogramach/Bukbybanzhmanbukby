@@ -203,6 +203,7 @@ function Map() {
 
     const triggerSearch = () => {
         // setName(input)
+        console.log(name)
         fetchData()
     }
 

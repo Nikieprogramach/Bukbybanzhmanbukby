@@ -156,7 +156,7 @@ const SearchBar = ({dataPass1, triggerSearch1}) => {
   return (
     <div class = "search-menu">
       <div className="search-bar">
-        <input type="text" id="fishSpecies"  placeholder="Search..." list='fishSpeciesList' onChange={handleChange}/>
+        <input type="text" id="fishSpecies"  placeholder="Search..." list='fishSpeciesList' onSelect={handleChange} onChange={handleChange} />
         <datalist id="fishSpeciesList">
           {fish_species.map((species, index) => (
             <option key={index} value={species} />
