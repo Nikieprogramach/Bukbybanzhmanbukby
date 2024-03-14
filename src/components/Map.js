@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
  ComposableMap,
  Geographies,
@@ -14,31 +15,38 @@ import "./Map.css";
 
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json"
 
-const Markers = [
-    {
-        name: "Tochka",
-        coordinates: [-160.423092, 20.367763] // flipped cords [East, North]
-    }
-]
+
 const mapWidth = 1060; //941
 const mapHeight = 510;
 
 function Map() {
     const [content, setContent] = useState("")
     const [responseData, setResponseData] = useState('');
+    const [searchType, setSearchType] = useState('all')
+    const [name, setName] = useState('default')
+    const [getData, setGetData] = useState(false)
 
     const fetchData = async () => {
         try {
-          const response = await fetch('http://localhost:5000/getFish');
-          const data = await response.json();
-          setResponseData(data);
+          const response = await axios.get('http://localhost:5000/getFish',{
+            params: {
+                searchType: "byClass",
+                name: "Teleostei"
+              }
+          });
+          const data = await response.data;
+          if(data != []){
+            setResponseData(data);
+          }
         } catch (error) {
           console.error('Error:', error);
         }
     };
 
     useEffect(() => {
-        fetchData();
+        if(!getData){
+            fetchData();
+        }
     }, []);
 
     return (
@@ -72,7 +80,7 @@ function Map() {
                             ))
                             }
                         </Geographies>
-                        {responseData? 
+                        {responseData && responseData != "Wrong input!"? 
                             responseData.map(({id, name, latitude, longitude, amount}) => (
                                 <Marker key={id} coordinates={[longitude, latitude]}>
                                     {/* <circle r={1} fill="#F00" strokeWidth={2} style={{hover + }}/>
