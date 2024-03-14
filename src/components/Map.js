@@ -31,7 +31,7 @@ function Map() {
         try {
           const response = await axios.get('http://localhost:5000/getFish',{
             params: {
-                searchType: "byClass",
+                searchType: "all",
                 name: "Teleostei"
               }
           });
