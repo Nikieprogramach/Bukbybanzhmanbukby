@@ -2,9 +2,14 @@ import React from 'react';
 import './SearchBar.css';
 
 const SearchBar = () => {
+  const handleClick = () => {
+  }
   return (
-    <div className="search-bar">
-      <input type="text" placeholder="Search..." />
+    <div class = "search-menu">
+      <div className="search-bar">
+        <input type="text" placeholder="Search..." />
+      </div>
+      <button id="search-button" onClick={handleClick}></button>
     </div>
   );
 }

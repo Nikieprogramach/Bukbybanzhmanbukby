@@ -4,15 +4,16 @@ import './Menu.css';
 
 const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
-
+  const handleClick = () => {
+    window.location.reload();
+  };
   const toggleMenu = () => {
       setIsMenuOpen(!isMenuOpen);
   };
   return (
     <div className="menu" style={{ left: isMenuOpen ? '0' : '-270px' }}>
       <div className="menu-header">
-        <div id = "logo"  alt="Site Logo"></div>
-        {/* <img src="/path/to/home-icon.png" alt="Home Icon" /> */}
+        <div id = "logo" onClick={handleClick}></div>
       </div>
       <SearchBar />
       {/* Other content can go here */}

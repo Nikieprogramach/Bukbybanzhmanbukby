@@ -11,6 +11,7 @@ import {
 import {Tooltip as ReactTooltip} from "react-tooltip"
 import 'react-tooltip/dist/react-tooltip.css'
 import MapMarker from "./MapMarker";
+import Menu from "./Menu";
 import "./Map.css";
 import divaRiba from './ribasigma.png';
 
@@ -51,6 +52,8 @@ function Map() {
     }, []);
 
     return (
+        <div>
+        <Menu /> 
         <div className="map-container" style={{height:'100vh', width:'100vw', overflow: 'hidden'}} >
             <ReactTooltip id="tooltip" place="top" content={content}/>
             <div style={{width: "100%"}}>
@@ -104,7 +107,41 @@ function Map() {
                 </ComposableMap>
             </div>
         </div>
+        </div>
     );
 }
 
 export default Map;
+
+
+const AISSTREAM_API_KEY = "0415ae3574e33ea295e648ce930f035e0a22620f"
+const socket = new WebSocket("wss://stream.aisstream.io/v0/stream");
+const API_KEY = process.env.AISSTREAM_API_KEY; //Would need to be established first
+socket.addEventListener("open", (_) => {
+  const subscriptionMessage = {
+    APIkey: API_KEY,
+    BoundingBoxes: [
+      [
+        [-180, -90],
+        [180, 90],
+      ],
+    ],
+  };
+  console.log(JSON.stringify(subscriptionMessage));
+  socket.send(JSON.stringify(subscriptionMessage));
+});
+
+socket.addEventListener("error", (event) => {
+  console.log(event);
+});
+
+socket.addEventListener("message", (event) => {
+  let aisMessage = JSON.parse(event.data);
+  if (aisMessage["MessageType"] === "PositionReport") {
+    let positionReport = aisMessage["Message"]["PositionReport"];
+    console.log(
+      `ShipId: ${positionReport["UserID"]} Latitude: ${positionReport["Latitude"]} Longitude: ${positionReport["Longitude"]}`
+    );
+  }
+});
+

@@ -29,16 +29,12 @@
 .menu-header {
   display: flex;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
   top: 0;
   left: 0;
   padding-left: 10px;
   height:65px;
 }
-
-/* .menu-header img {
-  margin-right: 10px;
-} */
 
 #logo{
 
@@ -48,6 +44,5 @@
   background-size:100%; 
   background-repeat: no-repeat; 
   background-position: center;
-  background-color: #A2D2DF;
-  border-radius: 10px;
+  cursor: pointer;
 }
