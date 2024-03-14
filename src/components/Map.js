@@ -16,12 +16,7 @@ import MapMarker from "./MapMarker";
 
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json"
 
-const Markers = [
-    {
-        name: "Tochka",
-        coordinates: [-160.423092, 20.367763] // flipped cords [East, North]
-    }
-]
+
 const mapWidth = 1060; //941
 const mapHeight = 510;
 
@@ -29,25 +24,30 @@ function Map() {
     const [content, setContent] = useState("")
     const [responseData, setResponseData] = useState('');
     const [searchType, setSearchType] = useState('all')
-    const [name, setName] = useState('')
+    const [name, setName] = useState('default')
+    const [getData, setGetData] = useState(false)
 
     const fetchData = async () => {
         try {
           const response = await axios.get('http://localhost:5000/getFish',{
             params: {
-                searchType: searchType,
-                name: name
+                searchType: "byClass",
+                name: "Teleostei"
               }
           });
           const data = await response.data;
-          setResponseData(data);
+          if(data != []){
+            setResponseData(data);
+          }
         } catch (error) {
           console.error('Error:', error);
         }
     };
 
     useEffect(() => {
-        fetchData();
+        if(!getData){
+            fetchData();
+        }
     }, []);
 
     return (
