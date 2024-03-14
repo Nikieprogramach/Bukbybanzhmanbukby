@@ -34,7 +34,11 @@ function Map() {
                         <Geographies geography="/map.json">
                             {({ geographies }) =>
                             geographies.map((geo) => (
-                                <Geography key={geo.rsmKey} geography={geo} data-tooltip-id = "tooltip" onMouseEnter={() => {setContent(geo.properties.name); console.log(content)}} onMouseLeave={() => {setContent("")}} style={{hover: {fill: "red", outline: "none"}}}/>
+                                <Geography key={geo.rsmKey} geography={geo} data-tooltip-id = "tooltip" 
+                                    onMouseEnter={() => {setContent(geo.properties.name); 
+                                    console.log(content)}} 
+                                    onMouseLeave={() => {setContent("")}} 
+                                    style={{default: { outline: "none" }, hover: { outline: "none" },pressed: { fill: "#F00" }}}/>
                             ))
                             }
                         </Geographies>
