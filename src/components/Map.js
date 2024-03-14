@@ -21,8 +21,8 @@ const Markers = [
         coordinates: [-160.423092, 20.367763] // flipped cords [East, North]
     }
 ]
-const mapWidth = 1055; //941
-const mapHeight = 500;
+const mapWidth = 1060; //941
+const mapHeight = 510;
 
 function Map() {
     const [content, setContent] = useState("")
@@ -43,11 +43,13 @@ function Map() {
     }, []);
 
     return (
-        <div className="map-container" >
+        <div className="map-container" style={{height:'100vh', width:'100vw', overflow: 'hidden'}} >
             <ReactTooltip id="tooltip" place="top" content={content}/>
             <div style={{width: "100%"}}>
                 <ComposableMap data-tip="" projection="geoMercator" 
-                    projectionConfig={{center:[-70, 5], scale: 150}}>
+                    projectionConfig={{center:[16, -70]}}
+                    style={{height:'200vh', width:'150vw', overflow: 'hidden'}}
+                    >
                 <ZoomableGroup
                     translateExtent={[
                     [0, -mapHeight],
