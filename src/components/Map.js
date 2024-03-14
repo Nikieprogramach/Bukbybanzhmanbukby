@@ -68,10 +68,21 @@ function Map() {
                             }
                         </Geographies>
                         {responseData? 
-                            responseData.map(({id, name, latitude, longitude}) => (
+                            responseData.map(({id, name, latitude, longitude, amount}) => (
                                 <Marker key={id} coordinates={[longitude, latitude]}>
-                                    <circle r={1} fill="#F00" strokeWidth={2}/>
-                                    <h1>{name}</h1>
+                                    {/* <circle r={1} fill="#F00" strokeWidth={2} style={{hover + }}/>
+                                    <text textAnchor="middle" y={-1} style={{display: "none"}}>
+                                        {name}
+                                    </text> */}
+                                    <circle
+                                        r={2}
+                                        style={{ fill: '#F00', strokeWidth: 2, opacity: amount/10 }}
+                                        onMouseEnter={(e) => { e.target.nextSibling.style.visibility = 'visible'; }}
+                                        onMouseLeave={(e) => { e.target.nextSibling.style.visibility = 'hidden'; }}
+                                    />
+                                    <text style={{ textAnchor: 'middle', y: -1, visibility: 'hidden' }}>
+                                        {name}
+                                    </text>
                                 </Marker>
                             ))
                             :
