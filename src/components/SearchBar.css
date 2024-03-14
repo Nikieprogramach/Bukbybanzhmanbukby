@@ -2,8 +2,8 @@
     display: flex;
     justify-content: center;
     margin-top: 20px; 
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 5px;
+    margin-right: 2.5px;
   }
   
 .search-bar input[type="text"] {
@@ -13,11 +13,7 @@
     border-radius: 10px; 
     background-color: #A2D2DF; 
     color: #2C2A4A;
-    background-image: url('../images/search.png');
-    background-repeat: no-repeat;
-    background-position:  10px center;
-    background-size: 20px; 
-    padding-left: 40px;
+    padding-right: 40px;
   }
 
 .search-bar input[type="text"]::placeholder {
@@ -27,4 +23,40 @@
 .search-bar input[type="text"]:focus {
     outline: none;
     border-color: #2C2A4A; 
+  }
+
+  .search-menu{
+    display: flex;
+  }
+
+  #search-button{
+    background-image: url('../images/search.png');
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+    background-position:  10px center;
+    background-size: 20px; 
+    padding-right: 5px;
+    background-color: #A2D2DF;
+    border: 1.5px solid #A2D2DF;
+    margin-top: 20px; 
+    border-radius: 10px; 
+    padding: 5px;
+    height: 40px;
+    width: 40px;
+    margin-left: 2.5px;
+    cursor: pointer;
+  }
+
+#search-button{
+    color: #2C2A4A;
+  }
+
+#search-button:hover {
+    outline: none;
+    border-color: #2C2A4A; 
+  }
+
+#search-button:active {
+    border: none;
   }
