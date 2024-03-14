@@ -18,9 +18,11 @@ const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-map
 const Markers = [
     {
         name: "Tochka",
-        coordinates: [52.11329, -6.897206] // flipped cords [East, North] [latitude, longitude]
+        coordinates: [-160.423092, 20.367763] // flipped cords [East, North]
     }
 ]
+const mapWidth = 1055; //941
+const mapHeight = 500;
 
 function Map() {
     const [content, setContent] = useState("")
@@ -41,12 +43,17 @@ function Map() {
     }, []);
 
     return (
-        <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+        <div className="map-container" >
             <ReactTooltip id="tooltip" place="top" content={content}/>
-            <div style={{width: "100vw"}}>
-                <ComposableMap data-tip="" style={{height: "100vh", width: "100vw"}}>
-                    <ZoomableGroup zoom={1}>
-                        {" "}
+            <div style={{width: "100%"}}>
+                <ComposableMap data-tip="" projection="geoMercator" 
+                    projectionConfig={{center:[-70, 5], scale: 150}}>
+                <ZoomableGroup
+                    translateExtent={[
+                    [0, -mapHeight],
+                    [mapWidth, mapHeight]
+                    ]} 
+                >
                         <Geographies geography="/map.json">
                             {({ geographies }) =>
                             geographies.map((geo) => (
@@ -54,7 +61,7 @@ function Map() {
                                     onMouseEnter={() => {setContent(geo.properties.name); 
                                     console.log(content)}} 
                                     onMouseLeave={() => {setContent("")}} 
-                                    style={{default: { outline: "none" }, hover: { outline: "none" },pressed: { fill: "#F00" }}}/>
+                                    style={{default: { outline: "none" }, hover: { outline: "none"},pressed: { fill: "#F00" }}}/>
                             ))
                             }
                         </Geographies>
