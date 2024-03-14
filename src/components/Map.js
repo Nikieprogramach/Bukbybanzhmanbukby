@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import {
  ComposableMap,
  Geographies,
@@ -27,6 +26,22 @@ const mapHeight = 500;
 
 function Map() {
     const [content, setContent] = useState("")
+    const [responseData, setResponseData] = useState('');
+
+    const fetchData = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/getFish');
+          const data = await response.json();
+          setResponseData(data);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
         <div className="map-container" >
             <ReactTooltip id="tooltip" place="top" content={content}/>
@@ -50,13 +65,15 @@ function Map() {
                             ))
                             }
                         </Geographies>
-                        {
-                            Markers.map(({name, coordinates}) => (
-                                <Marker key={name} coordinates={coordinates}>
+                        {responseData? 
+                            responseData.map(({id, name, latitude, longitude}) => (
+                                <Marker key={id} coordinates={[longitude, latitude]}>
                                     <circle r={1} fill="#F00" strokeWidth={2}/>
                                     <h1>{name}</h1>
                                 </Marker>
                             ))
+                            :
+                            <></>
                         }                 
                     </ZoomableGroup>
                 </ComposableMap>
