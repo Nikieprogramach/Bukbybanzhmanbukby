@@ -167,7 +167,9 @@ function Map() {
     const [name, setName] = useState('Hippocampus reidi')
     const [getData, setGetData] = useState(false)
     const [input, setInput] = useState("")
+
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [infoPopup, setInfoPopup] = useState();
 
     const fetchData = async () => {
         try {
@@ -237,17 +239,37 @@ function Map() {
     }
 
     const shipInfo = (name, latitude, longitude, id) => {
+        setInfoPopup({"name": name, "latitude": latitude, "longitude": longitude, "id": id})
         setIsPopupOpen(true);
-        console.log(name, latitude, longitude, id)
+        // console.log(name, latitude, longitude, id)
     }
 
     return (
         <div>
         {isPopupOpen && (
-            <div className="popup">
-            <button onClick={setIsPopupOpen(false)}>Close</button>
-            <h2>Popup Content</h2>
-            {/* Add your popup content here */}
+            <div style={{
+                position: 'fixed',
+                top: "200px",
+                right: "100px",
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                }}>
+                <div style={{
+                    backgroundColor: 'white',
+                    padding: '20px',
+                    width: "300px",
+                    height: "400px",
+                    borderRadius: '5px',
+                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // drop shadow
+                }}>
+                    <h2>{infoPopup['name']}</h2>
+                    <p>{infoPopup['id']}</p>
+                    <h3>Coordinates</h3>
+                    <p>Latitude: {infoPopup['latitude']}</p>
+                    <p>Longitude: {infoPopup['longitude']}</p>
+                    <button onClick={() => setIsPopupOpen(false)}>Close</button>
+                </div>
             </div>
         )}
         <Menu dataPass2={handleChange} triggerSearch2={() =>  triggerSearch()}/> 
