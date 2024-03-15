@@ -160,7 +160,6 @@ const fish_species = [
     "Actinopteri",
     "Elasmobranchii",
     "Teleostei"
-
 ]
 
 const endangered_fish_species = [
@@ -181,7 +180,7 @@ function Map() {
     const [responseData, setResponseData] = useState('');
     const [shipData, setShipData] = useState('');
     const [searchType, setSearchType] = useState('all')
-    const [name, setName] = useState('Actinopteri')
+    const [name, setName] = useState('Teleostei')
     const [getData, setGetData] = useState(false)
     const [input, setInput] = useState("")
     const [searchTypeInput, setSearchTypeInput] = useState("")
@@ -268,7 +267,7 @@ function Map() {
         const fishInArea = checkForFishInRegion(latitude,longitude)
         let totalAmountOfNearbyFish = 0
         fishInArea.map((item) => {
-            totalAmountOfNearbyFish += item['amount']
+            totalAmountOfNearbyFish += Number(item['amount'])
         })
         let hasEndangeredSpeciesInProximity = false
         let EndangeredSpeciesInProximity = []
@@ -291,7 +290,9 @@ function Map() {
             if(item['latitude'] >= latitude - 1 && item['longitude'] >= longitude - 1 && item['latitude'] <= latitude + 1 && item['longitude'] <= longitude + 1){
                 // setFishFound(prevArr => [...prevArr, {"name": item['name'], "amount": item['amount']}])
                 //setFishFound([...fishFound, {"name": item['name'], "amount": item['amount']}])
-                arr = [...arr, {"name": item['name'], "amount": item['amount']}]
+                
+                arr = [...arr, {"name": item['name'], "amount": Number(item['amount'])}]
+                // console.log(arr)
             }
         })
         //console.log(arr)
@@ -316,19 +317,69 @@ function Map() {
         return refinedArr
     }
 
+    const checkForEndangeredFish = (latitude, longitude) => {
+        let arr = []
+        responseData.map((item)=>{
+            if(item['latitude'] >= latitude - 1 && item['longitude'] >= longitude - 1 && item['latitude'] <= latitude + 1 && item['longitude'] <= longitude + 1){
+                // setFishFound(prevArr => [...prevArr, {"name": item['name'], "amount": item['amount']}])
+                //setFishFound([...fishFound, {"name": item['name'], "amount": item['amount']}])
+                
+                arr = [...arr, {"name": item['name'], "amount": Number(item['amount'])}]
+                // console.log(arr)
+            }
+        })
+        //console.log(arr)
+        let refinedArr = []
+        arr.map((item) => {
+            if(refinedArr.length == 0){
+                refinedArr = [...refinedArr, item]
+            }else{
+                let alreadyInArr = false
+                refinedArr.map((arrItem) => {
+                    if(arrItem['name'] == item['name']){
+                        arrItem['amount'] += 1
+                        alreadyInArr = true
+                    }
+                })
+                if(!alreadyInArr){
+                    refinedArr = [...refinedArr, item]
+                }
+            }
+        })
+        console.log(refinedArr)  
+        let hasEndangeredSpeciesInProximity = false  
+        refinedArr.map((fish) => {
+            endangered_fish_species.map((end_fish) => {
+                if(fish['name'] == end_fish){
+                    hasEndangeredSpeciesInProximity = true
+                }
+            })
+        })    
+        return hasEndangeredSpeciesInProximity
+    }
+
+    const chackIfFishIsEnd = (fishName) => {
+        return endangered_fish_species.includes(fishName)
+    }
+
+
     return (
         <div>
         {isPopupOpen && (
             <div className="popup">
                 <div>
-                    <h2>{infoPopup['name']}</h2>
-                    
-                    <p>MMSI (ID): {infoPopup['id']}</p>
+                    <h2>{infoPopup['name']}</h2>                    
+                    <p style={{marginBottom: "5px"}}>MMSI (ID): {infoPopup['id']}</p>
                     <h3>Coordinates:</h3>
                     <p>   &nbsp; Latitude: <br></br> &nbsp; &nbsp; &nbsp; &nbsp;{infoPopup['latitude']}</p>
                     <p>   &nbsp; Longitude: <br></br>  &nbsp; &nbsp; &nbsp; &nbsp;{infoPopup['longitude']}</p>
-                    <h3>Fish in area:</h3>
-                    <div>
+                    {infoPopup['fishInArea'].length > 0 ? 
+                        <h3 style={{marginBottom: "5px", marginTop: "5px"}}>Fish in area:</h3>
+                    :
+                        <></>
+                    }
+                    
+                    <div className="scrollable-div" style={{maxHeight: "100px", overflow: "hidden", overflowY: "auto", marginBottom: "5px"}}>
                         {
                             infoPopup['fishInArea'].map((fish) => {
                                 return(<p>-{fish['name']}: {((fish['amount']/infoPopup['totalAmountOfFish']) * 100).toFixed(2)}%</p>)
@@ -337,16 +388,18 @@ function Map() {
                     </div>
                     <div>
                         {infoPopup['hasEndangeredSpeciesInProximity'] ? 
-                            <div style={{color: "white"}}>
-                                <h2>Warning</h2>
+                            <div style={{color: "red"}}>
+                                <h2 >Warning!</h2>
                                 {infoPopup['EndangeredSpeciesInProximity'].map((end_fish) => {
                                     return(
-                                        <p>-{end_fish}</p>
+                                        <p><strong>-{end_fish}</strong> is endangered</p>
                                     )
                                 })}
                             </div>
                         :
-                            <></>
+                        <div style={{color: "#34eb77"}}>
+                            <h2 >Safe to fish!</h2>
+                        </div>
                         }
                     </div>
                 </div>
@@ -386,7 +439,17 @@ function Map() {
                     </Geographies>
                         {responseData && responseData != "Wrong input!"? 
                             responseData.map(({id, name, latitude, longitude, amount}) => (
-                                <Marker key={id} coordinates={[longitude, latitude]}>        
+                                <Marker key={id} coordinates={[longitude, latitude]}>
+                                    {chackIfFishIsEnd(name) ?
+                                        <path
+                                            fill="red"
+                                            stroke="#02283B"
+                                            strokeWidth="20"
+                                            transform="translate(-1.1, -1), scale(0.005)"
+                                            style={{opacity: amount/5}}
+                                            d="M327.1 96c-89.97 0-168.54 54.77-212.27 101.63L27.5 131.58c-12.13-9.18-30.24.6-27.14 14.66L24.54 256 .35 365.77c-3.1 14.06 15.01 23.83 27.14 14.66l87.33-66.05C158.55 361.23 237.13 416 327.1 416 464.56 416 576 288 576 256S464.56 96 327.1 96zm87.43 184c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24 13.26 0 24 10.74 24 24 0 13.25-10.75 24-24 24z"
+                                        />
+                                    :
                                         <path
                                             fill="white"
                                             stroke="#02283B"
@@ -395,6 +458,8 @@ function Map() {
                                             style={{opacity: amount/5}}
                                             d="M327.1 96c-89.97 0-168.54 54.77-212.27 101.63L27.5 131.58c-12.13-9.18-30.24.6-27.14 14.66L24.54 256 .35 365.77c-3.1 14.06 15.01 23.83 27.14 14.66l87.33-66.05C158.55 361.23 237.13 416 327.1 416 464.56 416 576 288 576 256S464.56 96 327.1 96zm87.43 184c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24 13.26 0 24 10.74 24 24 0 13.25-10.75 24-24 24z"
                                         />
+                                    }        
+
                                 </Marker>
                             ))
                             :
@@ -403,14 +468,26 @@ function Map() {
                         {shipData && shipData != "Wrong input!"? 
                             shipData.map(({ShipID, Latitude, Longitude, Name}) => (
                                 <Marker  key={ShipID} coordinates={[Longitude, Latitude]}>
-                                    <path 
-                                        fill="red" 
-                                        d="M16.997 20c-.899 0-1.288-.311-1.876-.781-.68-.543-1.525-1.219-3.127-1.219-1.601 0-2.446.676-3.125 1.22-.587.469-.975.78-1.874.78-.897 0-1.285-.311-1.872-.78C4.444 18.676 3.601 18 2 18v2c.898 0 1.286.311 1.873.78.679.544 1.523 1.22 3.122 1.22 1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219s2.446-.676 3.125-1.219C20.689 20.328 21.1 20 22 20v-2c-1.602 0-2.447.676-3.127 1.219-.588.47-.977.781-1.876.781zM6 8.5 4 9l2 8h.995c1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219H18l.027-.107.313-1.252L20 9l-2-.5V5.001a1 1 0 0 0-.804-.981L13 3.181V2h-2v1.181l-4.196.839A1 1 0 0 0 6 5.001V8.5zm2-2.681 4-.8 4 .8V8l-4-1-4 1V5.819z" 
-                                        stroke="#ff0004"
-                                        stroke-width="0.001" 
-                                        transform="translate(-1.2, -1.2), scale(0.2)"
-                                        onClick={() => {shipInfo(Name, Latitude, Longitude, ShipID)}}
-                                    />
+                                    {checkForEndangeredFish(Latitude, Longitude) ?
+                                        <path 
+                                            fill="red" 
+                                            d="M16.997 20c-.899 0-1.288-.311-1.876-.781-.68-.543-1.525-1.219-3.127-1.219-1.601 0-2.446.676-3.125 1.22-.587.469-.975.78-1.874.78-.897 0-1.285-.311-1.872-.78C4.444 18.676 3.601 18 2 18v2c.898 0 1.286.311 1.873.78.679.544 1.523 1.22 3.122 1.22 1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219s2.446-.676 3.125-1.219C20.689 20.328 21.1 20 22 20v-2c-1.602 0-2.447.676-3.127 1.219-.588.47-.977.781-1.876.781zM6 8.5 4 9l2 8h.995c1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219H18l.027-.107.313-1.252L20 9l-2-.5V5.001a1 1 0 0 0-.804-.981L13 3.181V2h-2v1.181l-4.196.839A1 1 0 0 0 6 5.001V8.5zm2-2.681 4-.8 4 .8V8l-4-1-4 1V5.819z" 
+                                            stroke="#ff0004"
+                                            stroke-width="0.001" 
+                                            transform="translate(-1.2, -1.2), scale(0.2)"
+                                            onClick={() => {shipInfo(Name, Latitude, Longitude, ShipID)}}
+                                        />
+                                        :
+                                        <path 
+                                            fill="#34eb77" 
+                                            d="M16.997 20c-.899 0-1.288-.311-1.876-.781-.68-.543-1.525-1.219-3.127-1.219-1.601 0-2.446.676-3.125 1.22-.587.469-.975.78-1.874.78-.897 0-1.285-.311-1.872-.78C4.444 18.676 3.601 18 2 18v2c.898 0 1.286.311 1.873.78.679.544 1.523 1.22 3.122 1.22 1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219s2.446-.676 3.125-1.219C20.689 20.328 21.1 20 22 20v-2c-1.602 0-2.447.676-3.127 1.219-.588.47-.977.781-1.876.781zM6 8.5 4 9l2 8h.995c1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219H18l.027-.107.313-1.252L20 9l-2-.5V5.001a1 1 0 0 0-.804-.981L13 3.181V2h-2v1.181l-4.196.839A1 1 0 0 0 6 5.001V8.5zm2-2.681 4-.8 4 .8V8l-4-1-4 1V5.819z" 
+                                            stroke="#ff0004"
+                                            stroke-width="0.001" 
+                                            transform="translate(-1.2, -1.2), scale(0.2)"
+                                            onClick={() => {shipInfo(Name, Latitude, Longitude, ShipID)}}
+                                        />                                        
+                                    }
+
                                 </Marker>
                             ))
                             :
