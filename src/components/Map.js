@@ -167,6 +167,7 @@ function Map() {
     const [name, setName] = useState('Hippocampus reidi')
     const [getData, setGetData] = useState(false)
     const [input, setInput] = useState("")
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const fetchData = async () => {
         try {
@@ -235,8 +236,20 @@ function Map() {
         fetchData()
     }
 
+    const shipInfo = (name, latitude, longitude, id) => {
+        setIsPopupOpen(true);
+        console.log(name, latitude, longitude, id)
+    }
+
     return (
         <div>
+        {isPopupOpen && (
+            <div className="popup">
+            <button onClick={setIsPopupOpen(false)}>Close</button>
+            <h2>Popup Content</h2>
+            {/* Add your popup content here */}
+            </div>
+        )}
         <Menu dataPass2={handleChange} triggerSearch2={() =>  triggerSearch()}/> 
         <div className="map-container" style={{height:'100vh', width:'100vw', overflow: 'hidden'}} >
             <ReactTooltip id="tooltip" place="top" content={content}/>
@@ -269,21 +282,14 @@ function Map() {
                     </Geographies>
                         {responseData && responseData != "Wrong input!"? 
                             responseData.map(({id, name, latitude, longitude, amount}) => (
-                                <Marker key={id} coordinates={[longitude, latitude]}>
-                                        <circle
-                                            r={0.5}
-                                            transform="translate(1.5, -0.3)"
-                                            style={{ fill: 'white', strokeWidth: 2, opacity: amount/10 }}                     
-                                        />         
+                                <Marker key={id} coordinates={[longitude, latitude]}>        
                                         <path
-                                            fill="whitesmoke"
-                                            stroke="white"
-                                            strokeWidth="0.4"
-                                            transform="translate(-3.5, -3.5), scale(0.3)"
+                                            fill="white"
+                                            stroke="#02283B"
+                                            strokeWidth="20"
+                                            transform="translate(-1.1, -1), scale(0.005)"
                                             style={{opacity: amount/10}}
-                                            fill-rule="evenodd"
-                                            clip-rule="evenodd"
-                                            d="M3.75 6.43945L8.26473 10.9542C8.33699 10.8877 8.41559 10.8161 8.49998 10.74C8.97782 10.3091 9.6451 9.73284 10.3998 9.15472C11.1518 8.57866 12.006 7.9889 12.8565 7.53996C13.6889 7.10063 14.6021 6.75011 15.45 6.75011C18.4689 6.75011 21 9.05576 21 12.0001C21 14.9445 18.4689 17.2501 15.45 17.2501C14.6021 17.2501 13.6889 16.8996 12.8565 16.4603C12.006 16.0113 11.1518 15.4216 10.3998 14.8455C9.6451 14.2674 8.97782 13.6911 8.49998 13.2603C8.41559 13.1842 8.33699 13.1125 8.26473 13.046L3.75 17.5608V6.43945ZM9.34352 12.0001C9.39427 11.9537 9.44797 11.9049 9.50444 11.854C9.96238 11.4411 10.598 10.8924 11.312 10.3455C12.0286 9.79657 12.8087 9.26132 13.5567 8.86651C14.3229 8.46209 14.9725 8.25011 15.45 8.25011C17.7331 8.25011 19.5 9.97391 19.5 12.0001C19.5 14.0263 17.7331 15.7501 15.45 15.7501C14.9725 15.7501 14.3229 15.5381 13.5567 15.1337C12.8087 14.7389 12.0286 14.2037 11.312 13.6547C10.598 13.1078 9.96238 12.5591 9.50444 12.1462C9.44797 12.0953 9.39427 12.0465 9.34352 12.0001ZM7.18934 12.0001L5.25 10.0608V13.9395L7.18934 12.0001Z"
+                                            d="M327.1 96c-89.97 0-168.54 54.77-212.27 101.63L27.5 131.58c-12.13-9.18-30.24.6-27.14 14.66L24.54 256 .35 365.77c-3.1 14.06 15.01 23.83 27.14 14.66l87.33-66.05C158.55 361.23 237.13 416 327.1 416 464.56 416 576 288 576 256S464.56 96 327.1 96zm87.43 184c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24 13.26 0 24 10.74 24 24 0 13.25-10.75 24-24 24z"
                                         />
                                 </Marker>
                             ))
@@ -291,14 +297,15 @@ function Map() {
                             <></>
                         }
                         {shipData && shipData != "Wrong input!"? 
-                            shipData.map(({ShipId, Latitude, Longitude}) => (
-                                <Marker key={ShipId} coordinates={[Longitude, Latitude]}>
+                            shipData.map(({ShipID, Latitude, Longitude, Name}) => (
+                                <Marker  key={ShipID} coordinates={[Longitude, Latitude]}>
                                     <path 
-                                        fill="none" 
-                                        d="M4 17.5L3 12L12 9L21 12L20 17.5M5 11.3333V7C5 5.89543 5.89543 5 7 5H17C18.1046 5 19 5.89543 19 7V11.3333M10 5V3C10 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V5M2 21C3 22 6 22 8 20C10 22 14 22 16 20C18 22 21 22 22 21" 
+                                        fill="red" 
+                                        d="M16.997 20c-.899 0-1.288-.311-1.876-.781-.68-.543-1.525-1.219-3.127-1.219-1.601 0-2.446.676-3.125 1.22-.587.469-.975.78-1.874.78-.897 0-1.285-.311-1.872-.78C4.444 18.676 3.601 18 2 18v2c.898 0 1.286.311 1.873.78.679.544 1.523 1.22 3.122 1.22 1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219s2.446-.676 3.125-1.219C20.689 20.328 21.1 20 22 20v-2c-1.602 0-2.447.676-3.127 1.219-.588.47-.977.781-1.876.781zM6 8.5 4 9l2 8h.995c1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219H18l.027-.107.313-1.252L20 9l-2-.5V5.001a1 1 0 0 0-.804-.981L13 3.181V2h-2v1.181l-4.196.839A1 1 0 0 0 6 5.001V8.5zm2-2.681 4-.8 4 .8V8l-4-1-4 1V5.819z" 
                                         stroke="#ff0004"
-                                        stroke-width="1" 
-                                        transform="translate(-3.6, -3.5), scale(0.3)"
+                                        stroke-width="0.001" 
+                                        transform="translate(-1.2, -1.2), scale(0.2)"
+                                        onClick={() => {shipInfo(Name, Latitude, Longitude, ShipID)}}
                                     />
                                 </Marker>
                             ))
