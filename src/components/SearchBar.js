@@ -137,7 +137,10 @@ const fish_species = [
   "Pterygotrigla macrorhynchus",
   "Pomacentrus burroughi",
   "Cyclopterinae",
-  "Zesticelus ochotensis"
+  "Zesticelus ochotensis",
+  "Actinopteri",
+  "Elasmobranchii",
+  "Teleostei"
 ]
 
 const SearchBar = ({dataPass1, triggerSearch1}) => {
