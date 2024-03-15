@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SearchBar.css';
 
 const fish_species = [
@@ -142,17 +142,36 @@ const fish_species = [
 
 const SearchBar = ({dataPass1, triggerSearch1}) => {
   const [data, setData] = useState('')
+  const [mode, setMode] = useState('')
 
   const handleChange = (event) => {
     const newData = event.target.value;
     setData(newData);
     // Pass the data back to the parent component using the callback function
-    dataPass1(newData);
+    dataPass1(data, mode)
 };
 
   const handleClick = () => {
     triggerSearch1();
   }
+
+  const handleSelect = (event) => {
+    const newMode = event.target.value;
+    console.log(event.target.value);
+    setMode(newMode)
+    dataPass1(data, mode)
+  }
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     // Call your function here
+  //     dataPass1(data, mode)
+  //   }, 10); // 3000 milliseconds = 3 seconds
+
+  //   // Clear the interval when the component unmounts
+  //   return () => clearInterval(intervalId);
+  // }, []);
+
   return (
     <div class = "search-menu">
       <div className="search-bar">
@@ -167,10 +186,10 @@ const SearchBar = ({dataPass1, triggerSearch1}) => {
       
       <div className="new_row">
         <p>Search filter:</p>
-        <select>
+        <select onChange={handleSelect}>
           <option value="all">Show all</option>
           <option value="byName">Search by name</option>
-          <option value="option3">Search by class</option>
+          <option value="byClass">Search by class</option>
         </select>
       </div>
     </div>

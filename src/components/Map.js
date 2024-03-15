@@ -176,10 +176,11 @@ function Map() {
     const [content, setContent] = useState(null)
     const [responseData, setResponseData] = useState('');
     const [shipData, setShipData] = useState('');
-    const [searchType, setSearchType] = useState('byName')
-    const [name, setName] = useState('Hippocampus reidi')
+    const [searchType, setSearchType] = useState('byClass')
+    const [name, setName] = useState('Actinopteri')
     const [getData, setGetData] = useState(false)
     const [input, setInput] = useState("")
+    const [searchTypeInput, setSearchTypeInput] = useState("")
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [infoPopup, setInfoPopup] = useState();
@@ -237,13 +238,20 @@ function Map() {
         return () => clearInterval(intervalId);
       }, []);
 
-    const handleChange = (data) => {
+
+
+    const handleChange = (data, mode) => {
         // Pass the data back to the parent component using the callback function
         if(data){
             setInput(data);
             if(fish_species.includes(input)){
                 setName(input)
             }
+        }
+        if(mode){
+            setSearchTypeInput(mode);
+            setSearchType(mode)
+
         }
     };
 
@@ -326,7 +334,7 @@ function Map() {
                     </div>
                     <div>
                         {infoPopup['hasEndangeredSpeciesInProximity'] ? 
-                            <div>
+                            <div style={{color: "white"}}>
                                 <h2>Warning</h2>
                                 {infoPopup['EndangeredSpeciesInProximity'].map((end_fish) => {
                                     return(
@@ -338,8 +346,6 @@ function Map() {
                             <></>
                         }
                     </div>
-                    <button onClick={() => setIsPopupOpen(false)}>Close</button>
-
                 </div>
                 <button onClick={() => setIsPopupOpen(false)}> <span aria-hidden="true">&times;</span></button>
 

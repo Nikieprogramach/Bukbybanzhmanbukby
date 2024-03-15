@@ -23,7 +23,7 @@ const Menu = ({dataPass2, triggerSearch2}) => {
       <div className="menu-header">
         <div id = "logo" onClick={handleClick}></div>
       </div>
-      <SearchBar dataPass1={(data) => {dataPass2(data)}} triggerSearch1={() => {triggerSearch2()}}/>
+      <SearchBar dataPass1={(data, mode) => {dataPass2(data, mode)}} triggerSearch1={() => {triggerSearch2()}}/>
       {/* Other content can go here */}
       <button className={`menu-button ${isMenuOpen ? '' : 'rotate'}`} onClick={toggleMenu} ></button>
     </div>
