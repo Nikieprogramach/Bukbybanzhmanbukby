@@ -162,8 +162,17 @@ const SearchBar = ({dataPass1, triggerSearch1}) => {
             <option key={index} value={species} />
           ))}
         </datalist>
+        <button id="search-button" onClick={handleClick}></button>
       </div>
-      <button id="search-button" onClick={handleClick}></button>
+      
+      <div className="new_row">
+        <p>Search filter:</p>
+        <select>
+          <option value="all">Show all</option>
+          <option value="byName">Search by name</option>
+          <option value="option3">Search by class</option>
+        </select>
+      </div>
     </div>
   );
 }

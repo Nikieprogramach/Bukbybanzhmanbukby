@@ -163,7 +163,7 @@ function Map() {
     const [content, setContent] = useState(null)
     const [responseData, setResponseData] = useState('');
     const [shipData, setShipData] = useState('');
-    const [searchType, setSearchType] = useState('all')
+    const [searchType, setSearchType] = useState('byName')
     const [name, setName] = useState('Hippocampus reidi')
     const [getData, setGetData] = useState(false)
     const [input, setInput] = useState("")
@@ -285,23 +285,6 @@ function Map() {
     return (
         <div>
         {isPopupOpen && (
-            // <div style={{
-            //     position: 'fixed',
-            //     top: "50%",
-            //     translate:"translate(-50%, -50%)",
-            //     right: "100px",
-            //     display: 'flex',
-            //     justifyContent: 'center',
-            //     alignItems: 'center',
-            //     }}>
-            //     <div style={{
-            //         backgroundColor: 'white',
-            //         padding: '20px',
-            //         width: "300px",
-            //         height: "400px",
-            //         borderRadius: '5px',
-            //         boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // drop shadow
-            //     }}>
             <div className="popup">
                 <div>
                     <h2>{infoPopup['name']}</h2>
@@ -310,12 +293,7 @@ function Map() {
                     <h3>Coordinates:</h3>
                     <p>   &nbsp; Latitude: <br></br> &nbsp; &nbsp; &nbsp; &nbsp;{infoPopup['latitude']}</p>
                     <p>   &nbsp; Longitude: <br></br>  &nbsp; &nbsp; &nbsp; &nbsp;{infoPopup['longitude']}</p>
-                    <h4>Fish nearby:</h4>
-                    <p>{infoPopup['id']}</p>
-                    <h3>Coordinates</h3>
-                    <p>Latitude: {infoPopup['latitude']}</p>
-                    <p>Longitude: {infoPopup['longitude']}</p>
-                    <h3>Fish in area</h3>
+                    <h3>Fish in area:</h3>
                     <div>
                         {
                             infoPopup['fishInArea'].map((fish) => {
@@ -323,7 +301,6 @@ function Map() {
                             })
                         }
                     </div>
-                    <button onClick={() => setIsPopupOpen(false)}>Close</button>
 
                 </div>
                 <button onClick={() => setIsPopupOpen(false)}> <span aria-hidden="true">&times;</span></button>
