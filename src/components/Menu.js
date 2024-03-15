@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SearchBar from './SearchBar';
 import './Menu.css';
 
 const Menu = ({dataPass2, triggerSearch2}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const navigate = useNavigate();
 
   const handleChange = (data) => {
     // Pass the data back to the parent component using the callback function
@@ -11,7 +13,7 @@ const Menu = ({dataPass2, triggerSearch2}) => {
   };
 
   const handleClick = () => {
-    window.location.reload();
+    navigate('/');
   };
   const toggleMenu = () => {
       setIsMenuOpen(!isMenuOpen);
