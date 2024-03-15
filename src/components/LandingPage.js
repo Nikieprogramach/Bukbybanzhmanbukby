@@ -33,7 +33,7 @@ const LandingPage = () => {
         <section class="header">
             <div class="text-box">
                 <h1>AquaTracker</h1>
-                <p>Our mission</p>
+                <p>Preserving Tomorrow's Seas Today</p>
                 <a onClick={goToMap} class="hero-btn">Check the map</a>
             </div>
         </section>

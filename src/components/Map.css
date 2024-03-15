@@ -5,16 +5,41 @@ body{
 .popup{
     position: fixed;
     top: 50%;
-    left: 50%;
+    right: 10px;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: rgba(162, 210, 223, 0.7);
+    background-image: url("../images/popup1.png ");
+    background-position: top center;
+    color: whitesmoke;
     padding: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
-    z-index: 1000;
+    width: 300px;
+    height: 400px;
+    border-radius: 15px;
+    z-index: 99;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
+    align-items: left;
+}
+
+.popup button{
+    top:20px;
+    right:22px;
+    position: absolute;
+    border:none;
+    background: transparent;
+    height: 20px;
+    width:20px;
+    cursor: pointer;
+    font-size: 25px;
+    color:whitesmoke;
+}
+
+.popup button:hover{
+    color: #A2D2DF;
+}
+
+.popup hr{
+    position: fixed;
+    color:#A2D2DF;
+    width: 100%;
 }
