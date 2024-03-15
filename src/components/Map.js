@@ -159,6 +159,19 @@ const fish_species = [
     "Zesticelus ochotensis"
 ]
 
+const endangered_fish_species = [
+    "Ophisternon gutturale",
+    "Sebastes chrysomelas",
+    "Citharichthys gymnorhinus",
+    "Hippocampus hippocampus",
+    "Favonigobius lateralis",
+    "Sargocentron tiere",
+    "Hippocampus planifrons",
+    "Chironemus georgianus",
+    "Porcostoma dentata",
+    "Acanthocepola limbata"
+]
+
 function Map() {
     const [content, setContent] = useState(null)
     const [responseData, setResponseData] = useState('');
@@ -246,7 +259,17 @@ function Map() {
         fishInArea.map((item) => {
             totalAmountOfNearbyFish += item['amount']
         })
-        setInfoPopup({"name": name, "latitude": latitude, "longitude": longitude, "id": id, "fishInArea": fishInArea, "totalAmountOfFish": totalAmountOfNearbyFish})
+        let hasEndangeredSpeciesInProximity = false
+        let EndangeredSpeciesInProximity = []
+        fishInArea.map((fish) => {
+            endangered_fish_species.map((end_fish) => {
+                if(fish['name'] == end_fish){
+                    hasEndangeredSpeciesInProximity = true
+                    EndangeredSpeciesInProximity = [...EndangeredSpeciesInProximity, end_fish]
+                }
+            })
+        })
+        setInfoPopup({"name": name, "latitude": latitude, "longitude": longitude, "id": id, "fishInArea": fishInArea, "totalAmountOfFish": totalAmountOfNearbyFish, "hasEndangeredSpeciesInProximity": hasEndangeredSpeciesInProximity, "EndangeredSpeciesInProximity": EndangeredSpeciesInProximity})
         setIsPopupOpen(true);
         // console.log(name, latitude, longitude, id)
     }
@@ -278,7 +301,7 @@ function Map() {
                 }
             }
         })
-        console.log(refinedArr)
+        console.log(refinedArr)        
         return refinedArr
     }
 
@@ -301,6 +324,21 @@ function Map() {
                             })
                         }
                     </div>
+                    <div>
+                        {infoPopup['hasEndangeredSpeciesInProximity'] ? 
+                            <div>
+                                <h2>Warning</h2>
+                                {infoPopup['EndangeredSpeciesInProximity'].map((end_fish) => {
+                                    return(
+                                        <p>-{end_fish}</p>
+                                    )
+                                })}
+                            </div>
+                        :
+                            <></>
+                        }
+                    </div>
+                    <button onClick={() => setIsPopupOpen(false)}>Close</button>
 
                 </div>
                 <button onClick={() => setIsPopupOpen(false)}> <span aria-hidden="true">&times;</span></button>
