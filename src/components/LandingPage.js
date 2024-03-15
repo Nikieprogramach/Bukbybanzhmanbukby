@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./LandingPage.css";
+import Buki from '../images/Buki.jpg';
+import Gab from '../images/Gab.jpg';
+import Belich from '../images/Belich.jpg';
+import Kris from '../images/Kris.jpg';
+import Nikola from '../images/Nikola.jpg';
+
 
 const LandingPage = () => { 
     const navigate = useNavigate();
@@ -46,23 +52,23 @@ const LandingPage = () => {
           </div>
           <div class="team-photos">      
               <div class="team-member">
-                  <img src="../images/Buki.jpg" alt="Team Member 1"></img>
+                  <img src = {Buki} alt="Team Member 1"></img>
                   <p>Bilyan Kostadinov</p>
               </div>
               <div class="team-member">
-                  <img src="https://via.placeholder.com/150" alt="Team Member 2"></img>
+                  <img src={Gab} alt="Team Member 2"></img>
                   <p>Gabriel Petrov</p>
               </div>
               <div class="team-member">
-                  <img src="https://via.placeholder.com/150" alt="Team Member 3"></img>
+                  <img src={Kris} alt="Team Member 3"></img>
                   <p>Kristyan Kirilov</p>
               </div>
               <div class="team-member">
-                  <img src="https://via.placeholder.com/150" alt="Team Member 4"></img>
+                  <img src={Nikola} alt="Team Member 4"></img>
                   <p>Nikola Aleksov</p>
               </div>
               <div class="team-member">
-                  <img src="https://via.placeholder.com/150" alt="Team Member 5"></img>
+                  <img src={Belich} alt="Team Member 5"></img>
                   <p>Boris Belichev</p>
               </div>
             </div>
