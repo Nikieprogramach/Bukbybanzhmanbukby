@@ -163,7 +163,7 @@ function Map() {
     const [content, setContent] = useState("")
     const [responseData, setResponseData] = useState('');
     const [shipData, setShipData] = useState('');
-    const [searchType, setSearchType] = useState('byName')
+    const [searchType, setSearchType] = useState('all')
     const [name, setName] = useState('Hippocampus reidi')
     const [getData, setGetData] = useState(false)
     const [input, setInput] = useState("")
