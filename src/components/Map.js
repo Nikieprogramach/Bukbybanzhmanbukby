@@ -176,7 +176,7 @@ function Map() {
     const [content, setContent] = useState(null)
     const [responseData, setResponseData] = useState('');
     const [shipData, setShipData] = useState('');
-    const [searchType, setSearchType] = useState('all')
+    const [searchType, setSearchType] = useState('byName')
     const [name, setName] = useState('Hippocampus reidi')
     const [getData, setGetData] = useState(false)
     const [input, setInput] = useState("")
@@ -308,28 +308,15 @@ function Map() {
     return (
         <div>
         {isPopupOpen && (
-            <div style={{
-                position: 'fixed',
-                top: "200px",
-                right: "100px",
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                }}>
-                <div style={{
-                    backgroundColor: 'white',
-                    padding: '20px',
-                    width: "300px",
-                    height: "400px",
-                    borderRadius: '5px',
-                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // drop shadow
-                }}>
+            <div className="popup">
+                <div>
                     <h2>{infoPopup['name']}</h2>
-                    <p>{infoPopup['id']}</p>
-                    <h3>Coordinates</h3>
-                    <p>Latitude: {infoPopup['latitude']}</p>
-                    <p>Longitude: {infoPopup['longitude']}</p>
-                    <h3>Fish in area</h3>
+                    
+                    <p>MMSI (ID): {infoPopup['id']}</p>
+                    <h3>Coordinates:</h3>
+                    <p>   &nbsp; Latitude: <br></br> &nbsp; &nbsp; &nbsp; &nbsp;{infoPopup['latitude']}</p>
+                    <p>   &nbsp; Longitude: <br></br>  &nbsp; &nbsp; &nbsp; &nbsp;{infoPopup['longitude']}</p>
+                    <h3>Fish in area:</h3>
                     <div>
                         {
                             infoPopup['fishInArea'].map((fish) => {
@@ -354,6 +341,8 @@ function Map() {
                     <button onClick={() => setIsPopupOpen(false)}>Close</button>
 
                 </div>
+                <button onClick={() => setIsPopupOpen(false)}> <span aria-hidden="true">&times;</span></button>
+
             </div>
         )}
         <Menu dataPass2={handleChange} triggerSearch2={() =>  triggerSearch()}/> 

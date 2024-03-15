@@ -33,44 +33,44 @@ const LandingPage = () => {
         <section class="header">
             <div class="text-box">
                 <h1>AquaTracker</h1>
-                <p>Our mission</p>
+                <p>Preserving Tomorrow's Seas Today</p>
                 <a onClick={goToMap} class="hero-btn">Check the map</a>
             </div>
         </section>
     
         <section class="about-us" id="about-us-section">
           <div class="about-content">
-            <b><h2>About Us</h2>
+              <b><h2>About Us</h2>
               </b>
-              <p>Here's a little something about us...</p>
+              <p>Our project is a comprehensive initiative aimed at tracking marine life worldwide, monitoring fishing activities, and actively participating in the preservation of endangered species. Through a combination of advanced technology and collaborative efforts, our system provides data on marine biodiversity, fishing vessel movements, and crucial information for sustainable fisheries management. </p>
           </div>
           <div class="team-photos">      
               <div class="team-member">
-                  <img src="https://via.placeholder.com/150" alt="Team Member 1"></img>
-                  <p>Person 1 Description</p>
+                  <img src="../images/Buki.jpg" alt="Team Member 1"></img>
+                  <p>Bilyan Kostadinov</p>
               </div>
               <div class="team-member">
                   <img src="https://via.placeholder.com/150" alt="Team Member 2"></img>
-                  <p>Person 2 Description</p>
+                  <p>Gabriel Petrov</p>
               </div>
               <div class="team-member">
                   <img src="https://via.placeholder.com/150" alt="Team Member 3"></img>
-                  <p>Person 3 Description</p>
+                  <p>Kristyan Kirilov</p>
               </div>
               <div class="team-member">
                   <img src="https://via.placeholder.com/150" alt="Team Member 4"></img>
-                  <p>Person 4 Description</p>
+                  <p>Nikola Aleksov</p>
               </div>
               <div class="team-member">
                   <img src="https://via.placeholder.com/150" alt="Team Member 5"></img>
-                  <p>Person 5 Description</p>
+                  <p>Boris Belichev</p>
               </div>
             </div>
         </section>
     
         <section class="future-content" id="future-content">
             <h3>Future Plans</h3>
-            <p>This section can be used to describe upcoming features, events, or any other future plans related to AquaTracker.</p>
+            <p>In addition to our current initiatives, we are exploring several future plans to further enhance our capabilities in marine conservation and sustainability. These include: tectoning activity monitoring, sattelite ship tracking, sea junk detection, illegal fishing detection etc.</p>
         </section>
     
         <footer class="contact-info">
