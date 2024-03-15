@@ -1,13 +1,134 @@
-/* .button{
+* {
+    font-family: 'PT Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#background {
+    min-height: 100vh;
+    background: linear-gradient(rgba(4,9,30,0.7), rgba(4,9,30,0.7)), url('../images/sifgma.png');
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 70px;
+}
+
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: transparent;
+    z-index: 1000;
     display: flex;
-    height: 40px;
-    width: 100px;
-    padding: 10px 20px;
+    justify-content: start;
+    padding: 20px;
+}
+
+.nav-item {
+    margin-right: 20px;
+}
+
+.nav-item a {
     color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
     text-decoration: none;
+    font-size: 16px;
+    padding: 10px 15px;
+    position: relative;
+    display: inline-block;
+}
+
+.nav-item a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: #fff;
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+.nav-item a:hover::after {
+    width: 100%;
+}
+
+section {
+    padding: 80px 20px;
     text-align: center;
+}
+
+.header .text-box {
+    margin-top: 120px;
+}
+
+.header .text-box h1, .about-us .about-content h2, .future-content h3 {
+    font-size: 62px;
+    color: #fff;
+}
+
+.header .text-box p, .about-us .about-content p, .future-content p {
+    font-size: 20px;
+    color: #fff;
+    margin: 20px 0 40px;
+}
+
+.hero-btn {
+    text-decoration: none;
+    color: #000;
+    background: rgba(255,255,255,0.3);
+    border: 1px solid;
+    padding: 15px 34px;
+    font-size: 17px;
     cursor: pointer;
-} */
+    transition: all 0.3s ease;
+    margin-top: 40px;
+    border-radius: 17px;
+}
+
+.hero-btn:hover {
+    background: rgba(0,0,0,0.3);
+    color: rgb(255,255,255);
+}
+
+.about-us {
+    margin-top: 160px;
+    margin-bottom: 160px;
+}
+
+.team-photos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.team-member {
+    margin: 20px;
+}
+
+.team-member img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.team-member p {
+    color: #fff;
+    max-width: 200px;
+}
+
+.future-content {
+    margin-bottom: 160px;
+}
+
+.contact-info {
+    background-color: rgba(0, 45, 98, 0.8);
+    color: #fff;
+    text-align: center;
+    padding: 30px 10px;
+    font-size: 0.9rem;
+}
