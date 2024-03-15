@@ -163,13 +163,15 @@ function Map() {
     const [content, setContent] = useState(null)
     const [responseData, setResponseData] = useState('');
     const [shipData, setShipData] = useState('');
-    const [searchType, setSearchType] = useState('byName')
+    const [searchType, setSearchType] = useState('all')
     const [name, setName] = useState('Hippocampus reidi')
     const [getData, setGetData] = useState(false)
     const [input, setInput] = useState("")
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [infoPopup, setInfoPopup] = useState();
+
+    const [fishFound, setFishFound] = useState([])
 
     const fetchData = async () => {
         try {
@@ -239,9 +241,45 @@ function Map() {
     }
 
     const shipInfo = (name, latitude, longitude, id) => {
-        setInfoPopup({"name": name, "latitude": latitude, "longitude": longitude, "id": id})
+        const fishInArea = checkForFishInRegion(latitude,longitude)
+        let totalAmountOfNearbyFish = 0
+        fishInArea.map((item) => {
+            totalAmountOfNearbyFish += item['amount']
+        })
+        setInfoPopup({"name": name, "latitude": latitude, "longitude": longitude, "id": id, "fishInArea": fishInArea, "totalAmountOfFish": totalAmountOfNearbyFish})
         setIsPopupOpen(true);
         // console.log(name, latitude, longitude, id)
+    }
+
+    const checkForFishInRegion = (latitude, longitude) => {
+        let arr = []
+        responseData.map((item)=>{
+            if(item['latitude'] >= latitude - 1 && item['longitude'] >= longitude - 1 && item['latitude'] <= latitude + 1 && item['longitude'] <= longitude + 1){
+                // setFishFound(prevArr => [...prevArr, {"name": item['name'], "amount": item['amount']}])
+                //setFishFound([...fishFound, {"name": item['name'], "amount": item['amount']}])
+                arr = [...arr, {"name": item['name'], "amount": item['amount']}]
+            }
+        })
+        //console.log(arr)
+        let refinedArr = []
+        arr.map((item) => {
+            if(refinedArr.length == 0){
+                refinedArr = [...refinedArr, item]
+            }else{
+                let alreadyInArr = false
+                refinedArr.map((arrItem) => {
+                    if(arrItem['name'] == item['name']){
+                        arrItem['amount'] += 1
+                        alreadyInArr = true
+                    }
+                })
+                if(!alreadyInArr){
+                    refinedArr = [...refinedArr, item]
+                }
+            }
+        })
+        console.log(refinedArr)
+        return refinedArr
     }
 
     return (
@@ -268,7 +306,16 @@ function Map() {
                     <h3>Coordinates</h3>
                     <p>Latitude: {infoPopup['latitude']}</p>
                     <p>Longitude: {infoPopup['longitude']}</p>
+                    <h3>Fish in area</h3>
+                    <div>
+                        {
+                            infoPopup['fishInArea'].map((fish) => {
+                                return(<p>-{fish['name']}: {((fish['amount']/infoPopup['totalAmountOfFish']) * 100).toFixed(2)}%</p>)
+                            })
+                        }
+                    </div>
                     <button onClick={() => setIsPopupOpen(false)}>Close</button>
+
                 </div>
             </div>
         )}
