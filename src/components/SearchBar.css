@@ -80,4 +80,20 @@
   height: 40px;
   color: #2C2A4A;
   background-color: #A2D2DF;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url("../images/dropdown.png") no-repeat scroll right center;
+  background-color: #A2D2DF;
+  padding: 5px;
+  border: 1.5px solid #A2D2DF;
+}
+
+.new_row select:hover{
+  outline: none;
+  border-color: #2C2A4A; 
+}
+
+.new_row select:focus{
+  outline: none;
 }
