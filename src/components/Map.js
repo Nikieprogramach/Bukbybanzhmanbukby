@@ -338,8 +338,6 @@ function Map() {
                             <></>
                         }
                     </div>
-                    <button onClick={() => setIsPopupOpen(false)}>Close</button>
-
                 </div>
                 <button onClick={() => setIsPopupOpen(false)}> <span aria-hidden="true">&times;</span></button>
 
