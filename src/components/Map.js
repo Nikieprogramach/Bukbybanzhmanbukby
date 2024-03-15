@@ -162,7 +162,8 @@ const fish_species = [
 function Map() {
     const [content, setContent] = useState(null)
     const [responseData, setResponseData] = useState('');
-    const [searchType, setSearchType] = useState('byName')
+    const [shipData, setShipData] = useState('');
+    const [searchType, setSearchType] = useState('all')
     const [name, setName] = useState('Hippocampus reidi')
     const [getData, setGetData] = useState(false)
     const [input, setInput] = useState("")
@@ -184,11 +185,39 @@ function Map() {
         }
     };
 
+    const getShipInfo = async () => {
+        try {
+          const response = await axios.get('http://localhost:5000/getShips',{
+            params: {
+                searchType: searchType,
+                name: name
+              }
+          });
+          const data = await response.data;
+          if(data != []){
+            setShipData(data);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+    };
+
     useEffect(() => {
         if(!getData){
             fetchData();
+            // getShipInfo()
         }
     }, []);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+          // Call your function here
+          getShipInfo();
+        }, 500); // 3000 milliseconds = 3 seconds
+    
+        // Clear the interval when the component unmounts
+        return () => clearInterval(intervalId);
+      }, []);
 
     const handleChange = (data) => {
         // Pass the data back to the parent component using the callback function
@@ -283,7 +312,26 @@ function Map() {
                             ))
                             :
                             <></>
-                        }                 
+                        }
+                        {shipData && shipData != "Wrong input!"? 
+                            shipData.map(({ShipId, Latitude, Longitude}) => (
+                                <Marker key={ShipId} coordinates={[Longitude, Latitude]}>
+                                    {/* <circle r={1} fill="#F00" strokeWidth={2} style={{hover + }}/>
+                                    <text textAnchor="middle" y={-1} style={{display: "none"}}>
+                                        {name}
+                                    </text> */}
+                                    <circle
+                                        r={2}
+                                        style={{ fill: 'red', strokeWidth: 2, opacity: 1 }}
+                                    />
+                                    {/* <text style={{ textAnchor: 'middle', y: -1, visibility: 'hidden' }}>
+                                        {name}
+                                    </text> */}
+                                </Marker>
+                            ))
+                            :
+                            <></>
+                        }                     
                     </ZoomableGroup>
                 </ComposableMap>
             </div>
