@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
  ComposableMap,
@@ -13,6 +13,8 @@ import 'react-tooltip/dist/react-tooltip.css'
 import MapMarker from "./MapMarker";
 import Menu from "./Menu";
 import "./Map.css";
+
+import { ReactComponent as notificationBell } from './notification-bell.svg'
 
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json"
 
@@ -190,6 +192,9 @@ function Map() {
 
     const [fishFound, setFishFound] = useState([])
 
+    const [warningMessages, setWarningMessages] = useState([])
+    const [showMessages, setShowMessages] = useState(false)
+
     const fetchData = async () => {
         try {
           const response = await axios.get('http://localhost:5000/getFish',{
@@ -346,7 +351,6 @@ function Map() {
                 }
             }
         })
-        console.log(refinedArr)  
         let hasEndangeredSpeciesInProximity = false  
         refinedArr.map((fish) => {
             endangered_fish_species.map((end_fish) => {
@@ -355,6 +359,12 @@ function Map() {
                 }
             })
         })    
+        if(hasEndangeredSpeciesInProximity){
+            let message = `Ship ${name} is in an area with endangered species!`
+            if(!warningMessages.includes(message)){
+                setWarningMessages([...warningMessages, message])
+            }
+        }
         return hasEndangeredSpeciesInProximity
     }
 
@@ -407,6 +417,25 @@ function Map() {
 
             </div>
         )}
+        <div style={{top:"20px", right:"20px", position: "fixed", zIndex: "10000"}}>
+            <div className="bellIcon" style={{top:"20px", right:"20px", position: "fixed", width: "30px", height: "30px", zIndex: "10000", color: "white"}}>
+                <svg style={{fill: "white"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" onClick={() => setShowMessages(!showMessages)}><path d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+                <p style={{position: "fixed", top:"40px", right:"15px", backgroundColor: "red", width: "20px", height: "20px", alignItems: 'center', display: "flex", justifyContent: "center", borderRadius:"10px"}}>{warningMessages.length}</p>
+            </div>
+            <div style={{height:"400px", width: "300px", marginTop: '40px'}}>
+                {showMessages?
+                    <div>
+                        {warningMessages.map((message, index) => {
+                            return(
+                                <div key={index} style={{color: "red", backgroundColor: 'rgba(0,0,0,.7)', margin: "2px 2px 2px 2px", padding:"5px 5px 5px 5px", border: "1px solid black", borderRadius:"10px", height: "50px"}}>{message}</div>
+                            )
+                        })}
+                    </div>
+                :
+                    <></>
+                }
+            </div>
+        </div>
         <Menu dataPass2={handleChange} triggerSearch2={() =>  triggerSearch()}/> 
         <div className="map-container" style={{height:'100vh', width:'100vw', overflow: 'hidden'}} >
             <ReactTooltip id="tooltip" place="top" content={content}/>
