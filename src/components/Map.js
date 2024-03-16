@@ -14,8 +14,6 @@ import MapMarker from "./MapMarker";
 import Menu from "./Menu";
 import "./Map.css";
 
-import { ReactComponent as notificationBell } from './notification-bell.svg'
-
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json"
 
 
@@ -317,12 +315,11 @@ function Map() {
                     refinedArr = [...refinedArr, item]
                 }
             }
-        })
-        console.log(refinedArr)        
+        })       
         return refinedArr
     }
 
-    const checkForEndangeredFish = (latitude, longitude) => {
+    const checkForEndangeredFish = (latitude, longitude, name) => {
         let arr = []
         responseData.map((item)=>{
             if(item['latitude'] >= latitude - 1 && item['longitude'] >= longitude - 1 && item['latitude'] <= latitude + 1 && item['longitude'] <= longitude + 1){
@@ -361,6 +358,7 @@ function Map() {
         })    
         if(hasEndangeredSpeciesInProximity){
             let message = `Ship ${name} is in an area with endangered species!`
+            console.log(message)
             if(!warningMessages.includes(message)){
                 setWarningMessages([...warningMessages, message])
             }
@@ -422,7 +420,7 @@ function Map() {
                 <svg style={{fill: "white"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" onClick={() => setShowMessages(!showMessages)}><path d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
                 <p style={{position: "fixed", top:"40px", right:"15px", backgroundColor: "red", width: "20px", height: "20px", alignItems: 'center', display: "flex", justifyContent: "center", borderRadius:"10px"}}>{warningMessages.length}</p>
             </div>
-            <div style={{height:"400px", width: "300px", marginTop: '40px'}}>
+            <div style={{width: "300px", marginTop: '40px'}}>
                 {showMessages?
                     <div>
                         {warningMessages.map((message, index) => {
@@ -497,7 +495,7 @@ function Map() {
                         {shipData && shipData != "Wrong input!"? 
                             shipData.map(({ShipID, Latitude, Longitude, Name}) => (
                                 <Marker  key={ShipID} coordinates={[Longitude, Latitude]}>
-                                    {checkForEndangeredFish(Latitude, Longitude) ?
+                                    {checkForEndangeredFish(Latitude, Longitude, Name) ?
                                         <path 
                                             fill="red" 
                                             d="M16.997 20c-.899 0-1.288-.311-1.876-.781-.68-.543-1.525-1.219-3.127-1.219-1.601 0-2.446.676-3.125 1.22-.587.469-.975.78-1.874.78-.897 0-1.285-.311-1.872-.78C4.444 18.676 3.601 18 2 18v2c.898 0 1.286.311 1.873.78.679.544 1.523 1.22 3.122 1.22 1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219s2.446-.676 3.125-1.219C20.689 20.328 21.1 20 22 20v-2c-1.602 0-2.447.676-3.127 1.219-.588.47-.977.781-1.876.781zM6 8.5 4 9l2 8h.995c1.601 0 2.445-.676 3.124-1.219.588-.47.976-.781 1.875-.781.9 0 1.311.328 1.878.781.679.543 1.524 1.219 3.125 1.219H18l.027-.107.313-1.252L20 9l-2-.5V5.001a1 1 0 0 0-.804-.981L13 3.181V2h-2v1.181l-4.196.839A1 1 0 0 0 6 5.001V8.5zm2-2.681 4-.8 4 .8V8l-4-1-4 1V5.819z" 
