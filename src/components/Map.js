@@ -172,7 +172,8 @@ const endangered_fish_species = [
     "Hippocampus planifrons",
     "Chironemus georgianus",
     "Porcostoma dentata",
-    "Acanthocepola limbata"
+    "Acanthocepola limbata",
+    "Malacocottus kincaidi"
 ]
 
 function Map() {
@@ -359,9 +360,16 @@ function Map() {
         if(hasEndangeredSpeciesInProximity){
             let message = `Ship ${name} is in an area with endangered species!`
             console.log(message)
+            // if(!warningMessages){
+            //     setWarningMessages([...warningMessages, message])
+            // }else
             if(!warningMessages.includes(message)){
                 setWarningMessages([...warningMessages, message])
             }
+        // }else{
+        //     if(!warningMessages.includes(`Ship ${name} is in an area with endangered species!`)){
+        //         setWarningMessages(warningMessages.pop(`Ship ${name} is in an area with endangered species!`))
+        //     }
         }
         return hasEndangeredSpeciesInProximity
     }
